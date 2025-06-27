@@ -25,7 +25,7 @@ export const SimpleGlassyBtn = ({
         rounded-${rounded}
         bg-white/${bgOpacity}
         backdrop-blur-${blurStrength}
-        w-fit min-w-32
+        w-fit xl:min-w-32
         text-center
         px-${paddingX} py-${paddingY}
         font-bold gradient-outline
