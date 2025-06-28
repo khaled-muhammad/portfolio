@@ -1,16 +1,27 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, type JSX } from "react";
+import SkillsIcon from "../assets/icons/skills.svg?react";
+
+type Link = {
+  name: string;
+  path: string;
+  icon: JSX.Element;
+};
+
+type NotchProps = React.HTMLAttributes<HTMLElement> & {
+  links: Link[];
+};
 
 const Logo = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width={40} viewBox="0 0 200 165">
     <defs>
       <linearGradient id="glassGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="rgba(255, 255, 255, 0.3)" />
-        <stop offset="40%" stop-color="rgba(255, 255, 255, 0.5)" />
-        <stop offset="100%" stop-color="rgba(255, 255, 255, 0.1)" />
+        <stop offset="0%" stopColor="rgba(255, 255, 255, 0.3)" />
+        <stop offset="40%" stopColor="rgba(255, 255, 255, 0.5)" />
+        <stop offset="100%" stopColor="rgba(255, 255, 255, 0.1)" />
       </linearGradient>
       <linearGradient id="colorGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#00FFFF" />
-        <stop offset="100%" stop-color="#FF00FF" />
+        <stop offset="0%" stopColor="#00FFFF" />
+        <stop offset="100%" stopColor="#FF00FF" />
       </linearGradient>
     </defs>
     <path
@@ -24,52 +35,96 @@ const Logo = () => (
   </svg>
 );
 
-const Notch = () => {
+const Notch = ({ links, className = "", ...props }: NotchProps) => {
   const notchRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [width, setWidth] = useState<string>('7rem');
+  const firstLinkRef = useRef<HTMLAnchorElement>(null);
+  const iconRef = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState<string>("7rem");
+  const [currentPath, setCurrentPath] = useState<string>(links[0].path);
 
   const resizeNotch = () => {
     const notch = notchRef.current;
     if (notch) {
       const contentWidth = notch.scrollWidth;
-      setWidth(isOpen ? `${contentWidth}px` : '7rem');
+      setWidth(
+        isOpen
+          ? `${contentWidth}px`
+          : `${
+              iconRef.current?.clientWidth +
+              firstLinkRef.current?.clientWidth +
+              32
+            }px`
+      );
     }
   };
 
   useEffect(() => {
     resizeNotch();
-  }, [isOpen]);
+  }, [isOpen, currentPath]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.boundingClientRect.top - a.boundingClientRect.top);
+
+        if (visible.length > 0) {
+          const id = visible[0].target.id;
+          window.history.replaceState(null, "", `#${id}`);
+          setCurrentPath(`#${id}`);
+        }
+      },
+      {
+        threshold: 0,
+        rootMargin: "-50% 0px -50% 0px",
+      }
+    );
+    console.log(links.filter((l) => l.path[0]).map((l) => l.path.slice(2)));
+    links
+      .filter((l) => l.path[0])
+      .map((l) => l.path.slice(2))
+      .forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+      });
+
+    return () => observer.disconnect();
+  }, [links]);
+
+  const currentLink =
+    links.find((l) => l.path.slice(1) == currentPath) || links[0];
+  const sortedLinks = [...links].sort((a, b) => {
+    if (a.path === currentLink.path) return -1;
+    if (b.path === currentLink.path) return 1;
+    return 0;
+  });
 
   return (
-        <div
-        ref={notchRef}
-        className="notch gradient-outline before:rounded-full"
-        style={{ width }}
-        onMouseEnter={() => setIsOpen(true)}
-        onMouseLeave={() => setIsOpen(false)}
-        >
-            <div className="current-icon ps-3 transition-all">
-                <svg width="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <linearGradient id="silverGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#f5f5f5"/>
-                    <stop offset="50%" stop-color="#cfcfcf"/>
-                    <stop offset="100%" stop-color="#f5f5f5"/>
-                    </linearGradient>
-                </defs>
-                <path 
-                    d="M3 10.5651C3 9.9907 3 9.70352 3.07403 9.43905C3.1396 9.20478 3.24737 8.98444 3.39203 8.78886C3.55534 8.56806 3.78202 8.39175 4.23539 8.03912L11.0177 2.764C11.369 2.49075 11.5447 2.35412 11.7387 2.3016C11.9098 2.25526 12.0902 2.25526 12.2613 2.3016C12.4553 2.35412 12.631 2.49075 12.9823 2.764L19.7646 8.03913C20.218 8.39175 20.4447 8.56806 20.608 8.78886C20.7526 8.98444 20.8604 9.20478 20.926 9.43905C21 9.70352 21 9.9907 21 10.5651V17.8C21 18.9201 21 19.4801 20.782 19.908C20.5903 20.2843 20.2843 20.5903 19.908 20.782C19.4802 21 18.9201 21 17.8 21H6.2C5.07989 21 4.51984 21 4.09202 20.782C3.71569 20.5903 3.40973 20.2843 3.21799 19.908C3 19.4801 3 18.9201 3 17.8V10.5651Z"
-                    fill="url(#silverGradient)"
-                />
-                </svg>
-            </div>
-            <div className="links flex items-center gap-6 museomoderno-400">
-                <a href="#" className="text-white relative inline-block group">
-                Home
-                <span className="absolute left-0 bottom-0 h-0.5 bg-white transition-all w-0 group-hover:w-full"></span>
-                </a>
-                <a href="#" className="bg-gradient-to-b from-slate-500 to-slate-100 bg-clip-text text-transparent hover:text-white transition-all">
+    <div
+      ref={notchRef}
+      className="notch gradient-outline before:rounded-full"
+      style={{ width }}
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+    >
+      <div ref={iconRef} className="current-icon ps-3 transition-all">
+        {currentLink.icon}
+      </div>
+      <div className="links flex items-center gap-6 museomoderno-400">
+        {sortedLinks.map((link, index) => (
+          <a
+            key={link.path}
+            ref={index === 0 ? firstLinkRef : null}
+            href={link.path}
+            className="text-white relative inline-block group"
+          >
+            {link.name}
+            <span className="absolute left-0 bottom-0 h-0.5 bg-white transition-all w-0 group-hover:w-full"></span>
+          </a>
+        ))}
+        {/* <a href="#" className="bg-gradient-to-b from-slate-500 to-slate-100 bg-clip-text text-transparent hover:text-white transition-all">
                 Projects
                 </a>
                 <a href="#" className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-white to-white
@@ -82,11 +137,11 @@ const Notch = () => {
                 </a>
                 <a href="#" className="text-white inline-block transition-all hover:tracking-widest hover:-translate-y-1">
                 About
-                </a>
-            </div>
-        </div>
+                </a> */}
+      </div>
+    </div>
   );
-}
+};
 
 const Navbar = () => (
   <>
@@ -97,7 +152,155 @@ const Navbar = () => (
       >
         <Logo />
       </a>
-      <Notch />
+      <Notch
+        links={[
+          {
+            name: "Home",
+            path: "/#landing",
+            icon: (
+              <svg
+                width="20"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <defs>
+                  <linearGradient
+                    id="silverGradient"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="100%"
+                  >
+                    <stop offset="0%" stopColor="#f5f5f5" />
+                    <stop offset="50%" stopColor="#cfcfcf" />
+                    <stop offset="100%" stopColor="#f5f5f5" />
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M3 10.5651C3 9.9907 3 9.70352 3.07403 9.43905C3.1396 9.20478 3.24737 8.98444 3.39203 8.78886C3.55534 8.56806 3.78202 8.39175 4.23539 8.03912L11.0177 2.764C11.369 2.49075 11.5447 2.35412 11.7387 2.3016C11.9098 2.25526 12.0902 2.25526 12.2613 2.3016C12.4553 2.35412 12.631 2.49075 12.9823 2.764L19.7646 8.03913C20.218 8.39175 20.4447 8.56806 20.608 8.78886C20.7526 8.98444 20.8604 9.20478 20.926 9.43905C21 9.70352 21 9.9907 21 10.5651V17.8C21 18.9201 21 19.4801 20.782 19.908C20.5903 20.2843 20.2843 20.5903 19.908 20.782C19.4802 21 18.9201 21 17.8 21H6.2C5.07989 21 4.51984 21 4.09202 20.782C3.71569 20.5903 3.40973 20.2843 3.21799 19.908C3 19.4801 3 18.9201 3 17.8V10.5651Z"
+                  fill="url(#silverGradient)"
+                />
+              </svg>
+            ),
+          },
+          {
+            name: "Projects",
+            path: "/#projects",
+            icon: (
+              <svg
+                width="20"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <defs>
+                  <linearGradient
+                    id="silverGradient"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="100%"
+                  >
+                    <stop offset="0%" stopColor="#f5f5f5" />
+                    <stop offset="50%" stopColor="#cfcfcf" />
+                    <stop offset="100%" stopColor="#f5f5f5" />
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M13 7L11.8845 4.76892C11.5634 4.1268 11.4029 3.80573 11.1634 3.57116C10.9516 3.36373 10.6963 3.20597 10.4161 3.10931C10.0992 3 9.74021 3 9.02229 3H5.2C4.0799 3 3.51984 3 3.09202 3.21799C2.71569 3.40973 2.40973 3.71569 2.21799 4.09202C2 4.51984 2 5.0799 2 6.2V7M2 7H17.2C18.8802 7 19.7202 7 20.362 7.32698C20.9265 7.6146 21.3854 8.07354 21.673 8.63803C22 9.27976 22 10.1198 22 11.8V16.2C22 17.8802 22 18.7202 21.673 19.362C21.3854 19.9265 20.9265 20.3854 20.362 20.673C19.7202 21 18.8802 21 17.2 21H6.8C5.11984 21 4.27976 21 3.63803 20.673C3.07354 20.3854 2.6146 19.9265 2.32698 19.362C2 18.7202 2 17.8802 2 16.2V7Z"
+                  fill="url(#silverGradient)"
+                />
+              </svg>
+            ),
+          },
+          {
+            name: "Skills",
+            path: "/#skills",
+            icon: (
+              <svg
+                width="20"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <defs>
+                  <linearGradient
+                    id="silverGradient"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="100%"
+                  >
+                    <stop offset="0%" stopColor="#f5f5f5" />
+                    <stop offset="50%" stopColor="#cfcfcf" />
+                    <stop offset="100%" stopColor="#f5f5f5" />
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M20 13V17.8C20 18.9201 20 19.4802 19.782 19.908C19.5903 20.2843 19.2843 20.5903 18.908 20.782C18.4802 21 17.9201 21 16.8 21H7.2C6.0799 21 5.51984 21 5.09202 20.782C4.71569 20.5903 4.40973 20.2843 4.21799 19.908C4 19.4802 4 18.9201 4 17.8V13M9 10H15M9.28571 14H14.7143C16.8467 14 17.913 14 18.7355 13.6039C19.552 13.2107 20.2107 12.552 20.6039 11.7355C21 10.913 21 9.84674 21 7.71429C21 6.11494 21 5.31527 20.7029 4.69835C20.408 4.08603 19.914 3.59197 19.3017 3.29709C18.6847 3 17.8851 3 16.2857 3H7.71429C6.11494 3 5.31527 3 4.69835 3.29709C4.08603 3.59197 3.59197 4.08603 3.29709 4.69835C3 5.31527 3 6.11494 3 7.71429C3 9.84674 3 10.913 3.39612 11.7355C3.7893 12.552 4.44803 13.2107 5.26447 13.6039C6.08703 14 7.15326 14 9.28571 14Z"
+                  fill="url(#silverGradient)"
+                />
+              </svg>
+            ),
+          },
+          {
+            name: "Certificates",
+            path: "/#certs",
+            icon: (
+              <svg
+                width="20"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <defs>
+                  <linearGradient
+                    id="silverGradient"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="100%"
+                  >
+                    <stop offset="0%" stopColor="#f5f5f5" />
+                    <stop offset="50%" stopColor="#cfcfcf" />
+                    <stop offset="100%" stopColor="#f5f5f5" />
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M3 10.5651C3 9.9907 3 9.70352 3.07403 9.43905C3.1396 9.20478 3.24737 8.98444 3.39203 8.78886C3.55534 8.56806 3.78202 8.39175 4.23539 8.03912L11.0177 2.764C11.369 2.49075 11.5447 2.35412 11.7387 2.3016C11.9098 2.25526 12.0902 2.25526 12.2613 2.3016C12.4553 2.35412 12.631 2.49075 12.9823 2.764L19.7646 8.03913C20.218 8.39175 20.4447 8.56806 20.608 8.78886C20.7526 8.98444 20.8604 9.20478 20.926 9.43905C21 9.70352 21 9.9907 21 10.5651V17.8C21 18.9201 21 19.4801 20.782 19.908C20.5903 20.2843 20.2843 20.5903 19.908 20.782C19.4802 21 18.9201 21 17.8 21H6.2C5.07989 21 4.51984 21 4.09202 20.782C3.71569 20.5903 3.40973 20.2843 3.21799 19.908C3 19.4801 3 18.9201 3 17.8V10.5651Z"
+                  fill="url(#silverGradient)"
+                />
+              </svg>
+            ),
+          },
+          {
+            name: "About",
+            path: "/#about",
+            icon: (
+              <svg
+                width="20"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <defs>
+                  <linearGradient
+                    id="silverGradient"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="100%"
+                  >
+                    <stop offset="0%" stopColor="#f5f5f5" />
+                    <stop offset="50%" stopColor="#cfcfcf" />
+                    <stop offset="100%" stopColor="#f5f5f5" />
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M3 10.5651C3 9.9907 3 9.70352 3.07403 9.43905C3.1396 9.20478 3.24737 8.98444 3.39203 8.78886C3.55534 8.56806 3.78202 8.39175 4.23539 8.03912L11.0177 2.764C11.369 2.49075 11.5447 2.35412 11.7387 2.3016C11.9098 2.25526 12.0902 2.25526 12.2613 2.3016C12.4553 2.35412 12.631 2.49075 12.9823 2.764L19.7646 8.03913C20.218 8.39175 20.4447 8.56806 20.608 8.78886C20.7526 8.98444 20.8604 9.20478 20.926 9.43905C21 9.70352 21 9.9907 21 10.5651V17.8C21 18.9201 21 19.4801 20.782 19.908C20.5903 20.2843 20.2843 20.5903 19.908 20.782C19.4802 21 18.9201 21 17.8 21H6.2C5.07989 21 4.51984 21 4.09202 20.782C3.71569 20.5903 3.40973 20.2843 3.21799 19.908C3 19.4801 3 18.9201 3 17.8V10.5651Z"
+                  fill="url(#silverGradient)"
+                />
+              </svg>
+            ),
+          },
+        ]}
+      />
     </nav>
   </>
 );
