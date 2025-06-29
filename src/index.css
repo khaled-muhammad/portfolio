@@ -144,6 +144,14 @@
   font-style: normal;
 }
 
+.font-montserrat {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.font-pacifico {
+  font-family: 'Pacifico', cursive;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -171,9 +179,9 @@
     /* max-width: 500px; */
   }
 
-  .notch:hover .current-icon {
+  /* .notch:hover .current-icon {
     opacity: 0;
-  }
+  } */
 
   .watery-text {
     @apply text-6xl pl-14 pt-8;

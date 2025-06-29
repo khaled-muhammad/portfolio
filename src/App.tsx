@@ -7,6 +7,7 @@ import GooeyButton from "./components/GooeyBtn";
 import AnimatedSection from "./components/AnimatedSection";
 import SmoothScroll from "./components/SmoothScroll";
 import SimpleGlassyBtn from "./components/SimpleGlassyBtn";
+import InfiniteItemsScroll from "./components/InfiniteItemsScroll";
 
 import GithubIcon from "./assets/icons/Github.svg";
 import LinuxIcon from "./assets/icons/Linux.svg?react";
@@ -15,6 +16,9 @@ import MatPlotLibIcon from "./assets/icons/MatPlotLib.svg?react";
 
 import { Label } from "./components/Label";
 import GlassySVG from "./components/GlassySVG";
+import ThreeDBackground from "./components/3DBackground";
+import GlassyButton from "./components/GooeyBtn";
+import ParallaxGallery from "./components/ParallaxGallery";
 const bornAt = 2007;
 const startedCodingAt = bornAt + 9;
 const yearsOfExperience = new Date().getFullYear() - startedCodingAt;
@@ -1070,22 +1074,20 @@ export const App = () => {
               style={{ maskType: "alpha" }}
             >
               <path
-                fill="#fff"
                 fill-rule="evenodd"
                 d="M90.767 127.126a7.968 7.968 0 0 0 6.35-.244l26.353-12.681a8 8 0 0 0 4.53-7.209V21.009a8 8 0 0 0-4.53-7.21L97.117 1.12a7.97 7.97 0 0 0-9.093 1.548l-50.45 46.026L15.6 32.013a5.328 5.328 0 0 0-6.807.302l-7.048 6.411a5.335 5.335 0 0 0-.006 7.888L20.796 64 1.74 81.387a5.336 5.336 0 0 0 .006 7.887l7.048 6.411a5.327 5.327 0 0 0 6.807.303l21.974-16.68 50.45 46.025a7.96 7.96 0 0 0 2.743 1.793Zm5.252-92.183L57.74 64l38.28 29.058V34.943Z"
                 clip-rule="evenodd"
               ></path>
             </mask>
-            <g mask="url(#a)">
+            <g>
               <path d="M123.471 13.82 97.097 1.12A7.973 7.973 0 0 0 88 2.668L1.662 81.387a5.333 5.333 0 0 0 .006 7.887l7.052 6.411a5.333 5.333 0 0 0 6.811.303l103.971-78.875c3.488-2.646 8.498-.158 8.498 4.22v-.306a8.001 8.001 0 0 0-4.529-7.208Z"></path>
-              <g filter="url(#b)">
+              <g>
                 <path d="m123.471 114.181-26.374 12.698A7.973 7.973 0 0 1 88 125.333L1.662 46.613a5.333 5.333 0 0 1 .006-7.887l7.052-6.411a5.333 5.333 0 0 1 6.811-.303l103.971 78.874c3.488 2.647 8.498.159 8.498-4.219v.306a8.001 8.001 0 0 1-4.529 7.208Z"></path>
               </g>
-              <g filter="url(#c)">
+              <g>
                 <path d="M97.098 126.882A7.977 7.977 0 0 1 88 125.333c2.952 2.952 8 .861 8-3.314V5.98c0-4.175-5.048-6.266-8-3.313a7.977 7.977 0 0 1 9.098-1.549L123.467 13.8A8 8 0 0 1 128 21.01v85.982a8 8 0 0 1-4.533 7.21l-26.369 12.681Z"></path>
               </g>
               <path
-                fill="url(#d)"
                 fill-rule="evenodd"
                 d="M90.69 127.126a7.968 7.968 0 0 0 6.349-.244l26.353-12.681a8 8 0 0 0 4.53-7.21V21.009a8 8 0 0 0-4.53-7.21L97.039 1.12a7.97 7.97 0 0 0-9.093 1.548l-50.45 46.026-21.974-16.68a5.328 5.328 0 0 0-6.807.302l-7.048 6.411a5.336 5.336 0 0 0-.006 7.888L20.718 64 1.662 81.386a5.335 5.335 0 0 0 .006 7.888l7.048 6.411a5.328 5.328 0 0 0 6.807.303l21.975-16.681 50.45 46.026a7.959 7.959 0 0 0 2.742 1.793Zm5.252-92.184L57.662 64l38.28 29.057V34.943Z"
                 clip-rule="evenodd"
@@ -1185,12 +1187,6 @@ export const App = () => {
         </GlassySVG>
       ),
     },
-    //     {
-    //   title: "",
-    //   icon: (
-
-    //   ),
-    // },
   ];
 
   useEffect(() => {
@@ -1604,12 +1600,81 @@ export const App = () => {
       </section>
       <section
         id="skills"
-        className="flex gap-6 justify-center items-center flex-wrap h-[100vh] bg-white/20 backdrop-blur-xl shadow-[inset_4px_4px_8px_rgba(255,255,255,0.1),inset_-4px_-4px_8px_rgba(255,255,255,0.08),0_8px_20px_rgba(0,0,0,0.2)] gradient-outline"
+        className="min-h-[80vh] flex flex-col justify-center items-center bg-white/5 backdrop-blur-xl shadow-[inset_4px_4px_8px_rgba(255,255,255,0.1),inset_-4px_-4px_8px_rgba(255,255,255,0.08),0_8px_20px_rgba(0,0,0,0.2)] gradient-outline"
       >
-        {skills.map((skill) => (
-          <div className="skill bubble p-5 w-22">{skill.icon}</div>
-        ))}
+        <h2 className="text-center text-5xl bg-white/40 w-fit pt-3 pb-2 px-4 rounded-b-2xl gradient-outline relative before:rounded-b-2xl museomoderno-400 text-white/70">
+          My Skills
+        </h2>
+        <InfiniteItemsScroll items={skills} />
       </section>
+      <section id="certs" className="relative min-h-[100vh] flex">
+        <ThreeDBackground
+          effect="rain"
+          useDefaultTexture={false}
+          textureUrl="/media/los.png"
+          className="absolute"
+        />
+        <ParallaxGallery
+          className="w-[100%] text-white comfortaa-700"
+          images={[
+            {
+              src: "/media/bg.png",
+              alt: "",
+              link: "#",
+              style: "layer-back",
+            },
+            {
+              src: "/media/bg.png",
+              alt: "",
+              link: "#",
+              style: "layer-mid",
+            },
+            {
+              src: "/media/bg.png",
+              alt: "",
+              link: "#",
+              style: "layer-foreground",
+            },
+            {
+              src: "/media/bg.png",
+              alt: "",
+              link: "#",
+              style: "layer-deep",
+            },
+            {
+              src: "/media/bg.png",
+              alt: "",
+              link: "#",
+              style: "layer-fast",
+            },
+            {
+              src: "/media/bg.png",
+              alt: "",
+              link: "#",
+              style: "layer-foreground",
+            },
+            {
+              src: "/media/bg.png",
+              alt: "",
+              link: "#",
+              style: "layer-deep",
+            },
+            {
+              src: "/media/bg.png",
+              alt: "",
+              link: "#",
+              style: "layer-fast-alt",
+            },
+            {
+              src: "/media/bg.png",
+              alt: "",
+              link: "#",
+              style: "layer-top",
+            },
+          ]}
+        />
+      </section>
+
     </>
   );
 };

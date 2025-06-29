@@ -1,5 +1,4 @@
 import { useRef, useState, useEffect, type JSX } from "react";
-import SkillsIcon from "../assets/icons/skills.svg?react";
 
 type Link = {
   name: string;
@@ -81,7 +80,7 @@ const Notch = ({ links, className = "", ...props }: NotchProps) => {
         rootMargin: "-50% 0px -50% 0px",
       }
     );
-    console.log(links.filter((l) => l.path[0]).map((l) => l.path.slice(2)));
+
     links
       .filter((l) => l.path[0])
       .map((l) => l.path.slice(2))
@@ -110,7 +109,25 @@ const Notch = ({ links, className = "", ...props }: NotchProps) => {
       onMouseLeave={() => setIsOpen(false)}
     >
       <div ref={iconRef} className="current-icon ps-3 transition-all">
-        {currentLink.icon}
+        {isOpen ? (
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+              stroke="white"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        ) : (
+          currentLink.icon
+        )}
       </div>
       <div className="links flex items-center gap-6 museomoderno-400">
         {sortedLinks.map((link, index) => (

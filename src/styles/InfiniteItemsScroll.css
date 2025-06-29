@@ -1,0 +1,136 @@
+.scroll-items-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 40px 0;
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.scroll-items-track {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 30px;
+  animation: scrollSkills 30s linear infinite;
+  width: fit-content;
+}
+
+.scroll-items-track.reverse {
+  animation-name: scrollSkillsReverse;
+}
+
+.iI-Item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-width: 150px;
+  height: 170px;
+  padding: 20px;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+}
+
+.glassy-skill {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.glassy-skill::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.15),
+    transparent 60%
+  );
+  transform: rotate(30deg);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.glassy-skill:hover::before {
+  opacity: 1;
+}
+
+.iI-Item svg {
+  width: 70px;
+  height: 70px;
+  margin-bottom: 15px;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.2));
+}
+
+.item-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.iI-Item:hover .item-title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.iI-Item:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 
+    0 10px 20px rgba(0, 0, 0, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.2);
+}
+
+@keyframes scrollSkills {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-50% - 15px));
+  }
+}
+
+@keyframes scrollSkillsReverse {
+  0% {
+    transform: translateX(calc(-50% - 15px));
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .iI-Item {
+    min-width: 120px;
+    height: 140px;
+  }
+  
+  .iI-Item svg {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .item-title {
+    font-size: 12px;
+  }
+}
+
+.scroll-items-container:hover .scroll-items-track {
+  animation-play-state: paused;
+}
