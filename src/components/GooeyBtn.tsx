@@ -1,10 +1,9 @@
 import React from 'react';
 
-const GlassyButton = ({ text = "Read More" }) => {
+const GlassyButton = ({ text = "Read More", className="" }) => {
   return (
-    <div className="relative flex items-center justify-center">
       <button
-        className="
+        className={`
           relative px-8 py-4 rounded-full
           bg-white/10 backdrop-blur-xl
           border border-white/30
@@ -15,7 +14,7 @@ const GlassyButton = ({ text = "Read More" }) => {
           active:scale-95
           cursor-pointer
           overflow-hidden
-        "
+        ${className}`}
       >
         <span className="relative z-10">{text}</span>
 
@@ -52,7 +51,6 @@ const GlassyButton = ({ text = "Read More" }) => {
           pointer-events-none
         "></div>
       </button>
-    </div>
   );
 };
 
