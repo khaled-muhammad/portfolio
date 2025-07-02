@@ -132,15 +132,15 @@
 }
 
 .molle-regular-italic {
-  font-family: "Molle", cursive;
+  font-family: "Molle";
   font-weight: 400;
-  font-style: italic;
+  
 }
 
 .quicksand-400 {
   font-family: "Quicksand", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 400;
+  /* font-weight: 400; */
   font-style: normal;
 }
 
@@ -212,7 +212,7 @@
   }
 
   .bubble {
-    @apply overflow-hidden backdrop-blur-lg  shadow-[inset_2px_2px_3px_rgba(255,255,255,0.4),inset_-2px_-2px_3px_rgba(255,255,255,0.25)] aspect-square flex min-w-12 items-center justify-center rounded-full relative before:rounded-full text-transparent bg-clip-text bg-gradient-to-b from-[#f5f5f5] via-[#cfcfcf] to-[#cfcfcf] transition-transform duration-300 ease-out;
+    @apply overflow-hidden backdrop-blur-lg shadow-[inset_2px_2px_3px_rgba(255,255,255,0.4),inset_-2px_-2px_3px_rgba(255,255,255,0.25)] aspect-square flex min-w-12 items-center justify-center rounded-full relative before:rounded-full text-transparent bg-clip-text bg-gradient-to-b from-[#f5f5f5] via-[#cfcfcf] to-[#cfcfcf] transition-transform duration-300 ease-out;
   }
 }
 
