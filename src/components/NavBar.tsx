@@ -10,8 +10,8 @@ type NotchProps = React.HTMLAttributes<HTMLElement> & {
   links: Link[];
 };
 
-const Logo = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={40} viewBox="0 0 200 165">
+export const Logo = ({width=40, className=''}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={width} viewBox="0 0 200 165" className={className}>
     <defs>
       <linearGradient id="glassGradient" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stopColor="rgba(255, 255, 255, 0.3)" />
@@ -137,7 +137,7 @@ const Notch = ({ links, className = "", ...props }: NotchProps) => {
             className="text-white relative inline-block group"
           >
             {link.name}
-            <span className="absolute left-0 bottom-0 h-0.5 bg-white transition-all w-0 group-hover:w-full"></span>
+            <span className="absolute left-0 bottom-0 h-0.5 bg-white transition-all w-0 group-hover:w-full before:absolute before:w-0 group-hover:before:w-0.5 before:h-0.5 rounded-full before:bg-white before:right-0 before:translate-x-1"></span>
           </a>
         ))}
         {/* <a href="#" className="bg-gradient-to-b from-slate-500 to-slate-100 bg-clip-text text-transparent hover:text-white transition-all">
