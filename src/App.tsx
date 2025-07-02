@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import Navbar from "./components/NavBar";
+import Navbar, { Logo } from "./components/NavBar";
 import WaterText from "./components/WaterText";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import scrollDown from "./assets/scroll-down.gif";
@@ -1676,8 +1676,10 @@ export const App = () => {
       </section>
       <section
         id="about"
-        className="backdrop-sepia-100 flex justify-center items-center min-h-[100vh] text-white/70 museomoderno-400"
+        className="relative flex justify-center items-center min-h-[100vh] text-white/70 museomoderno-400"
       >
+        <div className="absolute inset-0 backdrop-sepia-100 -z-10"></div>
+
         <div className="content flex flex-col gap-15 p-10 2xl:px-80 xl:px-50 lg:px-25 lg:flex-row lg:gap-5">
           <div className="personal-info flex flex-col gap-3 flex-[2]">
             <h1 className="text-2xl font-bold">Hi, I am Khaled Muhammad</h1>
@@ -1894,6 +1896,84 @@ export const App = () => {
           </div>
         </div>
       </section>
+      <footer className="pt-[5rem] pb-[2rem] px-10 relative flex flex-col gradient-outline gap-10 text-white quicksand-400 font-bold">
+        <div className="absolute inset-0 backdrop-sepia-100 backdrop-blur-md -z-10">
+          <WaterText text={undefined} />
+        </div>
+        <Logo width={100} className="self-center" />
+        <h2 className="text-center text-5xl">Book Meeting today</h2>
+        <p className="text-center font-medium text-white/60">
+          We can discuss projects, make deals, collab together and more!
+        </p>
+        <GlassyButton
+          className="text-white/50 self-center"
+          text="Book Meeting"
+        />
+        <div className="links flex flex-col gap-6 lg:gap-0 lg:flex-row justify-between px-4">
+          <div className="contact-links">
+            <h2 className="text-2xl mb-5">Contact</h2>
+            <ul>
+              <li>
+                <a href="#" className="flex justify-center items-center gap-2">
+                  <div className="bubble min-w-10">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 48 48"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <defs>
+                        <linearGradient
+                          id="#blueGradient"
+                          x1="0"
+                          y1="0"
+                          x2="48"
+                          y2="48"
+                          gradientUnits="userSpaceOnUse"
+                        >
+                          <stop stopColor="rgba(255,255,255,0.6)" offset="0%" />
+                          <stop
+                            stopColor="rgba(255,255,255,0.4)"
+                            offset="100%"
+                          />
+                        </linearGradient>
+                      </defs>
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M0 24C0 10.7452 10.7452 0 24 0C37.2548 0 48 10.7452 48 24C48 37.2548 37.2548 48 24 48C10.7452 48 0 37.2548 0 24ZM16.9605 19.8778H11.5216V36.2196H16.9605V19.8778ZM17.3188 14.8227C17.2835 13.2204 16.1377 12 14.277 12C12.4164 12 11.2 13.2204 11.2 14.8227C11.2 16.3918 12.3805 17.6473 14.2064 17.6473H14.2412C16.1377 17.6473 17.3188 16.3918 17.3188 14.8227ZM36.5754 26.8497C36.5754 21.8303 33.8922 19.4941 30.3131 19.4941C27.4254 19.4941 26.1326 21.0802 25.4107 22.1929V19.8783H19.9711C20.0428 21.4117 19.9711 36.22 19.9711 36.22H25.4107V27.0934C25.4107 26.605 25.446 26.1178 25.5898 25.7681C25.9829 24.7924 26.8779 23.7822 28.3805 23.7822C30.3494 23.7822 31.1365 25.2807 31.1365 27.4767V36.2196H36.5752L36.5754 26.8497Z"
+                        fill="url(##blueGradient)"
+                      />
+                    </svg>
+                  </div>
+                  +201550534225
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div className="navigate-links">
+            <h2 className="text-2xl mb-5">Navigate</h2>
+            <ul>
+              <li>
+                <a href="#">
+                  Home
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  Blog
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <WaterText
+          text="All copyrights reserved © 2025"
+          className="text-center comfortaa-700"
+          color="rgba(255,255,255,0.6)"
+        />
+      </footer>
     </>
   );
 };
