@@ -1,4 +1,15 @@
+import { Link } from 'react-router';
 import '../styles/parallax-gallery.css';
+
+export const PGO = [
+  'layer-back',
+  'layer-mid',
+  'layer-foreground',
+  'layer-fast',
+  'layer-deep',
+  'layer-fast-alt',
+  'layer-top',
+];
 
 const ParallaxGallery = ({ images, className = '', ...props }) => {
   return (
@@ -9,9 +20,9 @@ const ParallaxGallery = ({ images, className = '', ...props }) => {
             className={`img-wrapper ${image.style || ""}`}
             key={index}
           >
-            <a href={image.link} target="_blank" rel="noopener noreferrer">
+            <Link to={image.link} rel="noopener noreferrer">
               <img src={image.src} alt={image.alt} />
-            </a>
+            </Link>
           </div>
         ))}
       </div>
