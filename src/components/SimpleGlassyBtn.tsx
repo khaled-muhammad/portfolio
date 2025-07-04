@@ -1,11 +1,11 @@
 type SimpleGlassyBtnProps = React.HTMLAttributes<HTMLElement> & {
   children: React.ReactNode;
-  bgOpacity?: number; // 0 to 100
-  blurStrength?: string; // e.g. 'lg', 'md', 'xl'
-  rounded?: string; // e.g. 'xl', '2xl', 'full'
-  paddingX?: string; // e.g. '4', '6'
-  paddingY?: string; // e.g. '2', '3'
-  shadow?: string; // e.g. Tailwind shadow string
+  bgOpacity?: number;
+  blurStrength?: string;
+  rounded?: string;
+  paddingX?: string;
+  paddingY?: string;
+  shadow?: string;
 };
 
 export const SimpleGlassyBtn = ({
@@ -20,7 +20,7 @@ export const SimpleGlassyBtn = ({
   ...props
 }: SimpleGlassyBtnProps) => {
   return (
-    <div
+    <button
       className={`glassy-btn
         rounded-${rounded}
         bg-white/${bgOpacity}
@@ -40,7 +40,7 @@ export const SimpleGlassyBtn = ({
       <div
         className={`absolute rounded-${rounded} bg-slate-300/50 inset-0 mt-4 -z-10 blur-xs`}
       ></div>
-    </div>
+    </button>
   );
 };
 
