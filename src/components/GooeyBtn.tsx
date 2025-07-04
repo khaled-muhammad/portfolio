@@ -1,6 +1,6 @@
 import React from 'react';
 
-const GlassyButton = ({ text = "Read More", className="" }) => {
+const GlassyButton = ({ text = "Read More", className="",onClick=undefined }) => {
   return (
       <button
         className={`
@@ -15,6 +15,7 @@ const GlassyButton = ({ text = "Read More", className="" }) => {
           cursor-pointer
           overflow-hidden
         ${className}`}
+        onClick={onClick}
       >
         <span className="relative z-10">{text}</span>
 
