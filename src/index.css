@@ -134,7 +134,6 @@
 .molle-regular-italic {
   font-family: "Molle";
   font-weight: 400;
-  
 }
 
 .quicksand-400 {
@@ -217,6 +216,28 @@
 }
 
 @layer utilities {
+  .txt-inner-shadow {
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2),
+      -2px -2px 6px rgba(255, 255, 255, 0.6);
+  }
+
+  .glassy-input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    transition: all 0.3s ease;
+  }
+
+  .glassy-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .glassy-input:focus {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+  }
+
   .animate-float1 {
     animation: float1 6s ease-in-out infinite;
   }
@@ -321,39 +342,36 @@
     }
   }
 
-@keyframes ud {
-  0% {
-    transform: scaleY(0);
-    transform-origin: bottom;
+  @keyframes ud {
+    0% {
+      transform: scaleY(0);
+      transform-origin: bottom;
+    }
+    25% {
+      transform: scaleY(1);
+      transform-origin: bottom;
+    }
+    50% {
+      transform: scaleY(0);
+      transform-origin: bottom;
+    }
+    51% {
+      transform: scaleY(0);
+      transform-origin: top;
+    }
+    75% {
+      transform: scaleY(1);
+      transform-origin: top;
+    }
+    100% {
+      transform: scaleY(0);
+      transform-origin: top;
+    }
   }
-  25% {
-    transform: scaleY(1);
-    transform-origin: bottom;
-  }
-  50% {
-    transform: scaleY(0);
-    transform-origin: bottom;
-  }
-  51% {
-    transform: scaleY(0);
-    transform-origin: top;
-  }
-  75% {
-    transform: scaleY(1);
-    transform-origin: top;
-  }
-  100% {
-    transform: scaleY(0);
-    transform-origin: top;
-  }
-}
-
 
   .animate-ud::before {
     animation: ud 3s ease-in-out infinite;
   }
-
-  
 }
 
 /* .gradient-outline {
