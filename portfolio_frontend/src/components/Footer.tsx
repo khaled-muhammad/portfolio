@@ -7,7 +7,7 @@ import { defaultAxios } from "@/lib/api";
 import { icons } from "@/icons";
 
 const Footer = () => {
-  const [personalContactInfo, setPersonalContactInfo] = useState([]);
+  const [personalContactInfo, setPersonalContactInfo] = useState<any[]>([]);
 
   useEffect(() => {
     defaultAxios.get("info/").then((res) => {
@@ -18,7 +18,7 @@ const Footer = () => {
   return (
     <footer className="pt-[5rem] pb-[2rem] px-10 relative flex flex-col gradient-outline gap-10 text-white quicksand-400 font-bold">
       <div className="absolute inset-0 backdrop-sepia-100 backdrop-blur-md -z-10">
-        <WaterText text={undefined} />
+        <WaterText text={""} />
       </div>
       <Logo width={100} className="self-center" />
       <h2 className="text-center text-5xl">Book Meeting today</h2>
@@ -36,9 +36,9 @@ const Footer = () => {
           <h2 className="text-2xl mb-5">Contact</h2>
           <ul className="flex flex-col items-start gap-3">
             {personalContactInfo.map((i) => <li>
-              <a href={i.title == 'email'? `mailto:${i.info}`: null} className="flex justify-center items-center gap-2">
+              <a href={i.title == 'email'? `mailto:${i.info}`: undefined} className="flex justify-center items-center gap-2 group">
                 <div className="bubble min-w-10">
-                  {icons[i.title]}
+                  {(icons as any)[i.title]}
                 </div>
                 {i.info}
               </a>

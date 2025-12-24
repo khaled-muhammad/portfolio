@@ -1,31 +1,40 @@
 import React, { useEffect, useRef, useState } from "react";
-import Navbar, { Logo } from "./components/NavBar";
+import Navbar from "./components/NavBar";
 import WaterText from "./components/WaterText";
+import CertificateCard from "./components/CertificateCard";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import scrollDown from "./assets/scroll-down.gif";
-import GooeyButton from "./components/GooeyBtn";
-import AnimatedSection from "./components/AnimatedSection";
+import GlassyButton from "./components/GooeyBtn";
 import SmoothScroll from "./components/SmoothScroll";
-import SimpleGlassyBtn from "./components/SimpleGlassyBtn";
 import InfiniteItemsScroll from "./components/InfiniteItemsScroll";
 import { toast } from 'react-toastify';
 
-import GithubIcon from "./assets/icons/Github.svg";
 import LinuxIcon from "./assets/icons/Linux.svg?react";
 import MDIcon from "./assets/icons/MDIcon.svg?react";
 import MatPlotLibIcon from "./assets/icons/MatPlotLib.svg?react";
 
 import { Label } from "./components/Label";
 import GlassySVG from "./components/GlassySVG";
-import ThreeDBackground from "./components/3DBackground";
-import GlassyButton from "./components/GooeyBtn";
-import ParallaxGallery, { PGO } from "./components/ParallaxGallery";
 import { defaultAxios } from "./lib/api";
-import { randInt } from "three/src/math/MathUtils.js";
 import { Link } from "react-router";
 import Footer from "./components/Footer";
 import { icons } from "./icons";
 import Projects from "./components/Projects";
+
+interface Certificate {
+  id: number;
+  title: string;
+  image: string;
+  link?: string;
+  [key: string]: any;
+}
+
+interface SocialMedia {
+  url: string;
+  platform: string;
+  [key: string]: any;
+}
+
 const bornAt = 2007;
 const startedCodingAt = bornAt + 9;
 const yearsOfExperience = new Date().getFullYear() - startedCodingAt;
@@ -34,8 +43,8 @@ export const App = () => {
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
 
-  const [certificates, setCerts] = useState([]);
-  const [socialMedia, setSocialMedia] = useState([]);
+  const [certificates, setCerts] = useState<Certificate[]>([]);
+  const [socialMedia, setSocialMedia] = useState<SocialMedia[]>([]);
   const spring = useSpring(x, {
     stiffness: 300,
     damping: 20,
@@ -656,7 +665,7 @@ export const App = () => {
               <stop offset="1" stopColor="#8F000056"></stop>
             </linearGradient>
             <linearGradient
-              xlink:href="#FZa"
+              xlinkHref="#FZa"
               id="FZb"
               x1="187.947"
               x2="187.947"
@@ -1236,16 +1245,12 @@ export const App = () => {
 }*/
     defaultAxios.get("certificates/").then((res) => {
       setCerts(
-        res.data.map((cert) => {
-          console.log(cert.title);
-          console.log(cert.aspect_ratio);
-          return {
-            src: cert.image,
-            alt: cert.title,
+        res.data.map((cert: any) => ({
+            id: cert.id,
+            title: cert.title,
+            image: cert.image,
             link: `/certs/${cert.id}`,
-            style: PGO[randInt(0, 6)],
-          };
-        })
+        }))
       );
     });
 
@@ -1262,11 +1267,11 @@ export const App = () => {
         id="landing"
         className="flex flex-col min-h-[100vh] justify-between"
       >
-        <div className="sector-1 flex items-center flex-col gap-8 md:gap-0 lg:flex-row">
+        <div className="sector-1 flex items-center flex-col gap-8 lg:flex-row">
           <div className="text">
             <WaterText
               text="Hi, I am Khaled Muhammad"
-              className="ps-6 comfortaa-700 text-center md:text-left text-[clamp(2.5rem,8vw,8rem)] mb-6 md:mb-0"
+              className="ps-6 comfortaa-700 text-center md:text-left text-5xl sm:text-6xl md:text-8xl lg:text-9xl leading-tight mb-6 md:mb-0"
             />
             <div ref={ref} className="flex gap-3 items-center flex-wrap">
               <div className="label gradient-outline relative z-10">
@@ -1288,7 +1293,7 @@ export const App = () => {
               </Label>
             </div>
           </div>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 m-5">
             <div className="my-pic overflow-hidden rounded-[60px] mx-4 md:mr-10 md:ml-0 p-10 bg-white/10 backdrop-blur-2xl gradient-outline relative before:rounded-[64px] shadow-[inset_5px_3px_4px_rgba(255,255,255,0.2)]">
               <img
                 src="https://ca.slack-edge.com/T0266FRGM-U08QKDF6F9B-edcd82c42589-512"
@@ -1299,13 +1304,13 @@ export const App = () => {
             <div className="social-media flex gap-6 justify-center mr-0 md:mr-10">
               {socialMedia.slice(0, 4).map((sm) => (
                 <a href={sm.url} target="_blank">
-                  <div className="bubble">{icons[sm.platform]}</div>
+                  <div className="bubble">{(icons as any)[sm.platform]}</div>
                 </a>
               ))}
             </div>
           </div>
         </div>
-        <div className="flex justify-center gap-5 items-start">
+        <div className="flex justify-center gap-5 items-start mt-10 md:mt-0">
           <a
             href="#projects"
             className="flex flex-col justify-center items-center gap-6"
@@ -1323,7 +1328,7 @@ export const App = () => {
               Read More
             </div>
           </div> */}
-            <GooeyButton />
+            <GlassyButton />
           </a>
           <Link to="/book">
             <GlassyButton className="text-white" text="Book Meeting" />
@@ -1341,17 +1346,15 @@ export const App = () => {
         </h2>
         <InfiniteItemsScroll items={skills} />
       </section>
-      <section id="certs" className="relative min-h-[100vh] flex">
-        <ThreeDBackground
-          effect="rain"
-          useDefaultTexture={false}
-          textureUrl="/media/los.png"
-          className="absolute"
-        />
-        <ParallaxGallery
-          className="w-[100%] text-white comfortaa-700"
-          images={certificates}
-        />
+      <section id="certs" className="relative min-h-[100vh] flex flex-col items-center justify-center py-20 px-4 md:px-10">
+        <h2 className="text-center text-5xl bg-white/10 backdrop-blur-md border border-white/20 w-fit pt-3 pb-2 px-8 rounded-2xl mb-16 museomoderno-400 text-white shadow-lg">
+          Certificates
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl mx-auto">
+          {certificates.map((cert: any, index) => (
+            <CertificateCard key={cert.id} certificate={cert} index={index} />
+          ))}
+        </div>
       </section>
       <section
         id="about"
@@ -1426,21 +1429,21 @@ export const App = () => {
             </div>
             <div className="flex gap-8 items-center">
               {socialMedia.length >= 1 && (
-                <a href={socialMedia[0].url}>
-                  <div className="bubble">{icons[socialMedia[0].platform]}</div>
+                <a href={socialMedia[0].url} className="group">
+                  <div className="bubble">{(icons as any)[socialMedia[0].platform]}</div>
                 </a>
               )}
               <GlassyButton text="Open CV" className="" onClick={() => {toast("Coming Soon")}} />
               {socialMedia.length >= 2 && (
-                <a href={socialMedia[1].url}>
-                  <div className="bubble">{icons[socialMedia[1].platform]}</div>
+                <a href={socialMedia[1].url} className="group">
+                  <div className="bubble">{(icons as any)[socialMedia[1].platform]}</div>
                 </a>
               )}
             </div>
             <div className="contin-links flex gap-4">
               {socialMedia.slice(2).map((sm) => (
-                <a href={sm.url}>
-                  <div className="bubble">{icons[sm.platform]}</div>
+                <a href={sm.url} className="group">
+                  <div className="bubble">{(icons as any)[sm.platform]}</div>
                 </a>
               ))}
             </div>

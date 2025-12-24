@@ -1,6 +1,12 @@
 import React from 'react';
 
-const GlassyButton = ({ text = "Read More", className="",onClick=undefined }) => {
+interface GlassyButtonProps {
+  text?: string;
+  className?: string;
+  onClick?: () => void;
+}
+
+const GlassyButton: React.FC<GlassyButtonProps> = ({ text = "Read More", className = "", onClick }) => {
   return (
       <button
         className={`

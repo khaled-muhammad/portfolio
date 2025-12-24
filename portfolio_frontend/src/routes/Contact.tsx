@@ -22,7 +22,7 @@ const ContactRoute = () => {
     resolver: zodResolver(schema),
   });
 
-  const sendMsg = (data) => {
+  const sendMsg = (data: any) => {
     defaultAxios.post('messages/', data).then((res) => {
       if ( res.status == 201 ) {
         toast("Message sent successfully.")
@@ -42,7 +42,7 @@ const ContactRoute = () => {
       className="w-[100vw] min-h-[100vh] relative flex justify-center items-start"
     >
       <form onSubmit={handleSubmit(sendMsg)} className="form min-w-[50%] relative flex flex-col justify-center items-center bg-white/60 backdrop-blur-3xl ring-white/50 ring-3 p-6 rounded-3xl gradient-outline before:rounded-3xl">
-        <h2 className="text-4xl text-white/60 font-bold txt-inner-shadow mb-8 text-left w-full">
+        <h2 className="text-4xl text-gray-700 font-bold txt-inner-shadow mb-8 text-left w-full">
           Contact Me
         </h2>
         <div className="flex flex-col lg:flex-row gap-5 justify-between w-full">
@@ -91,7 +91,7 @@ const ContactRoute = () => {
                 />
               </svg>
             </div>
-            {errors.name && <p>{errors.name.message}</p>}
+            {errors.name && <p className="text-red-600 ml-2 mt-1 font-medium">{errors.name.message}</p>}
             <div className="relative">
               <input
                 type="email"
@@ -167,7 +167,7 @@ const ContactRoute = () => {
                 />
               </svg>
             </div>
-            {errors.phone && <p>{errors.phone.message}</p>}
+            {errors.phone && <p className="text-red-600 ml-2 mt-1 font-medium">{errors.phone.message}</p>}
             <div className="relative">
               <textarea
                 id="message"

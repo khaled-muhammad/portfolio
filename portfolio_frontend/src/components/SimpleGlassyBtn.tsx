@@ -1,4 +1,4 @@
-type SimpleGlassyBtnProps = React.HTMLAttributes<HTMLElement> & {
+type SimpleGlassyBtnProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode;
   bgOpacity?: number;
   blurStrength?: string;

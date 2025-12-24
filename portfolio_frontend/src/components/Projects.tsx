@@ -196,14 +196,14 @@ const Projects = () => {
                 </div>
                 <div className="b-left absolute bottom-0 left-0 flex flex-col gap-4 w-full pr-4 justify-start items-start md:items-center lg:items-start">
                   <div
-                    className="3d-glassy-btn relative self-end mr-5 sm:block md:hidden lg:block cursor-pointer"
+                    className="3d-glassy-btn group/btn relative self-end mr-5 sm:block md:hidden lg:block cursor-pointer"
                     onClick={() => toast("Coming Soon ...")}
                   >
-                    <div className="bg-white/30 backdrop-blur-md rounded-xl absolute w-[114%] h-[100%] left-1/2 -translate-x-1/2 translate-y-3 -z-20 shadow-xl"></div>
+                    <div className="bg-white/30 backdrop-blur-md rounded-xl absolute w-[114%] h-[100%] left-1/2 -translate-x-1/2 translate-y-3 -z-20 shadow-xl transition-all duration-300"></div>
 
-                    <div className="bg-white/20 backdrop-blur-md border border-white/40 rounded-xl absolute w-[104%] h-[96%] left-1/2 -translate-x-1/2 translate-y-1.5 -z-10 shadow-[inset_5px_3px_4px_rgba(255,255,255,0.2)]"></div>
+                    <div className="bg-white/20 backdrop-blur-md border border-white/40 rounded-xl absolute w-[104%] h-[96%] left-1/2 -translate-x-1/2 translate-y-1.5 -z-10 shadow-[inset_5px_3px_4px_rgba(255,255,255,0.2)] transition-all duration-300 group-hover/btn:translate-y-1 group-active/btn:translate-y-3"></div>
 
-                    <div className="bg-gradient-to-b from-white/40 to-white/10 backdrop-blur-xl gradient-outline before:rounded-xl text-[#047e62] font-bold px-5 py-3 rounded-xl text-sm shadow-[inset_5px_3px_4px_rgba(255,255,255,0.2)]">
+                    <div className="bg-gradient-to-b from-white/40 to-white/10 backdrop-blur-xl gradient-outline before:rounded-xl text-[#047e62] font-bold px-5 py-3 rounded-xl text-sm shadow-[inset_5px_3px_4px_rgba(255,255,255,0.2)] transition-all duration-300 group-hover/btn:-translate-y-1 group-active/btn:translate-y-3">
                       Read More
                     </div>
                   </div>

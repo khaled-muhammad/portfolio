@@ -1,17 +1,26 @@
 import React, { useEffect, useRef } from 'react';
 import './WaterText.css';
 
-const WaterText = ({
+interface WaterTextProps {
+  text: string;
+  className?: string;
+  color?: string;
+  style?: React.CSSProperties;
+}
+
+const WaterText: React.FC<WaterTextProps> = ({
   text,
   className = '',
   color = 'transparent',
   style = {},
 }) => {
-  const textRef = useRef(null);
-  const turbulenceRef = useRef(null);
+  const textRef = useRef<HTMLHeadingElement>(null);
+  const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
 
   useEffect(() => {
     const h1 = textRef.current;
+    if (!h1) return;
+    
     for (let i = 0; i < 15; i++) {
       const droplet = document.createElement('div');
       droplet.classList.add('droplet');
@@ -24,13 +33,23 @@ const WaterText = ({
     }
 
     let frames = 0;
+    let animationFrameId: number;
     const animate = () => {
-      frames += 0.02;
+      frames += 0.05; // Increased step size to reduce update frequency requirement
       const baseFrequency = 0.01 + Math.abs(Math.sin(frames) * 0.005);
-      turbulenceRef.current.setAttribute('baseFrequency', `${baseFrequency} ${baseFrequency + 0.01}`);
-      requestAnimationFrame(animate);
+      if (turbulenceRef.current) {
+        turbulenceRef.current.setAttribute('baseFrequency', `${baseFrequency} ${baseFrequency + 0.01}`);
+      }
+      // Limit frame rate to ~30fps for performance
+      setTimeout(() => {
+        animationFrameId = requestAnimationFrame(animate);
+      }, 33);
     };
     animate();
+
+    return () => {
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+    };
   }, []);
 
   return (
@@ -60,6 +79,10 @@ const WaterText = ({
           color,
           WebkitBackgroundClip: 'text',
           backgroundClip: 'text',
+          fontSize: 'inherit',
+          fontFamily: 'inherit',
+          lineHeight: 'inherit',
+          textAlign: 'inherit',
         }}
       >
         {text}

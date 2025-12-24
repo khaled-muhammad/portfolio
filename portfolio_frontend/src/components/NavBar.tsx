@@ -57,8 +57,8 @@ const Notch = ({ links, className = "", ...props }: NotchProps) => {
         isOpen
           ? `${contentWidth}px`
           : `${
-              iconRef.current?.clientWidth +
-              firstLinkRef.current?.clientWidth +
+              (iconRef.current?.clientWidth || 0) +
+              (firstLinkRef.current?.clientWidth || 0) +
               32
             }px`
       );
@@ -183,6 +183,7 @@ const Notch = ({ links, className = "", ...props }: NotchProps) => {
 };
 
 const Navbar = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [links, setLinks] = useState([
     {
       name: "Home",
@@ -587,15 +588,92 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="py-5 px-5 flex z-999 relative">
+      <nav className="py-5 px-5 flex z-999 relative justify-between items-center">
         <a
           href="#"
           className="gradient-outline relative p-5 aspect-square flex justify-center items-center rounded-full before:rounded-full backdrop-blur-xl shadow-[inset_1px_3px_4px_rgba(255,255,255,0.6)]"
         >
           <Logo />
         </a>
-        <Notch links={links} />
+        
+        {/* Desktop Navigation - Hidden on mobile */}
+        <div className="hidden md:block">
+          <Notch links={links} />
+        </div>
+        
+        {/* Mobile Menu Button - Hidden on desktop */}
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="md:hidden p-3 rounded-full backdrop-blur-md bg-black/50 border border-white/20 text-white hover:bg-white/10 transition-all duration-300"
+          aria-label="Toggle mobile menu"
+        >
+          <div className="w-6 h-6 flex flex-col justify-center items-center relative">
+            <span
+              className={`block w-6 h-0.5 bg-white transition-all duration-300 ease-in-out ${
+                isMobileMenuOpen ? 'rotate-45 translate-y-[5px]' : ''
+              }`}
+            />
+            <span
+              className={`block w-6 h-0.5 bg-white mt-1 transition-all duration-300 ease-in-out ${
+                isMobileMenuOpen ? 'opacity-0' : ''
+              }`}
+            />
+            <span
+              className={`block w-6 h-0.5 bg-white mt-1 transition-all duration-300 ease-in-out ${
+                isMobileMenuOpen ? '-rotate-45 -translate-y-[5px]' : ''
+              }`}
+            />
+          </div>
+        </button>
       </nav>
+      
+      {/* Mobile Menu - Full screen overlay */}
+      <div
+        className={`fixed inset-0 z-50 bg-black/95 backdrop-blur-lg transition-all duration-500 ease-in-out md:hidden ${
+          isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+        }`}
+      >
+        <div className="flex flex-col items-center justify-center h-full pt-20">
+          <div className="flex flex-col space-y-8">
+            {links.map((link, index) => (
+              <HashLink
+                key={link.path}
+                to={link.path}
+                className={`text-white text-2xl font-medium hover:text-blue-400 transition-all duration-300 transform hover:scale-105 ${
+                  isMobileMenuOpen ? 'animate-slideInUp' : ''
+                }`}
+                smooth={true}
+                onClick={() => setIsMobileMenuOpen(false)}
+                style={{
+                  animationDelay: `${index * 0.1}s`,
+                  opacity: isMobileMenuOpen ? 0 : 1,
+                  transform: isMobileMenuOpen ? 'translateY(20px)' : 'translateY(0)'
+                }}
+              >
+                <div className="flex items-center space-x-4">
+                  <div className="w-8 h-8 flex items-center justify-center">
+                    {link.icon}
+                  </div>
+                  <span>{link.name}</span>
+                </div>
+              </HashLink>
+            ))}
+          </div>
+        </div>
+        
+        {/* Close button */}
+        <button
+          onClick={() => setIsMobileMenuOpen(false)}
+          className="absolute top-6 right-6 p-3 rounded-full backdrop-blur-md bg-white/10 text-white hover:bg-white/20 transition-all duration-300"
+          aria-label="Close mobile menu"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 6L6 18M6 6L18 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
+      </div>
+      
+      
     </>
   );
 };
