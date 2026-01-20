@@ -9,6 +9,7 @@ import Layout from './components/Layout.tsx';
 import CertificatesRoute from './routes/Certificates.tsx';
 import CertificateRoute from './routes/Certificate.tsx';
 import FourOFour from './routes/FourOFour.tsx';
+import AuthRoute from './routes/Auth.tsx';
 import { ToastContainer } from 'react-toastify';
 
 
@@ -22,6 +23,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="certs" element={<CertificatesRoute />}>
             <Route path=":id" element={<CertificateRoute />} />
           </Route>
+          <Route path="auth" element={<AuthRoute />} />
           <Route path="*" element={<FourOFour />} />
         </Route>
       </Routes>

@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router';
 
@@ -18,61 +17,95 @@ interface CertificateCardProps {
 const CertificateCard: React.FC<CertificateCardProps> = ({ certificate, index }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 30, scale: 0.95 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+      whileHover={{ y: -10 }}
+      transition={{
+        duration: 0.5,
+        delay: index * 0.1,
+        ease: [0.23, 1, 0.32, 1]
+      }}
       className="group relative flex flex-col h-full"
     >
-      <div className="relative p-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-xl overflow-hidden hover:bg-white/20 transition-all duration-300 h-full flex flex-col">
-        {/* Glassmorphic sheen effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-        
-        {/* Image Container */}
-        <div className="relative aspect-video w-full overflow-hidden rounded-xl mb-4">
-            <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300 z-10" />
-            <img 
-              src={certificate.image} 
-              alt={certificate.title} 
-              className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-            />
-        </div>
+      <div className="relative p-1 bg-gradient-to-br from-white/20 to-transparent rounded-2xl overflow-hidden h-full flex flex-col shadow-2xl">
+        <div className="absolute inset-0 bg-white/5 backdrop-blur-2xl -z-10" />
 
-        {/* Content */}
-        <div className="flex-grow flex flex-col justify-between">
-          <h3 className="text-xl font-bold text-white mb-2 comfortaa-700 group-hover:text-cyan-300 transition-colors">
-            {certificate.title}
-          </h3>
-          
-          <div className="flex justify-end mt-4">
-             {certificate.link ? (
-                certificate.link.startsWith('http') ? (
-                  <a 
-                    href={certificate.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-sm text-white transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
-                  >
-                    View Certificate
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                  </a>
-                ) : (
-                  <Link 
-                    to={certificate.link}
-                    className="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-sm text-white transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
-                  >
-                    View Certificate
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                  </Link>
-                )
-             ) : (
-                <span className="text-white/50 text-sm italic">No link available</span>
-             )}
+        {/* Animated Glow Border */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 -z-5"
+          animate={{
+            backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+          }}
+          transition={{
+            duration: 5,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+          style={{ backgroundSize: "200% 200%" }}
+        />
+
+        <div className="p-4 bg-black/20 rounded-xl h-full flex flex-col items-stretch">
+          {/* Image Container with Floating Effect */}
+          <div className="relative aspect-video w-full overflow-hidden rounded-lg mb-6 shadow-inner ring-1 ring-white/10">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 z-10" />
+            <motion.img
+              src={certificate.image}
+              alt={certificate.title}
+              className="w-full h-full object-cover"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            />
+
+            {/* Floating Badge */}
+            <div className="absolute top-3 right-3 z-20">
+              <div className="px-3 py-1 bg-white/10 backdrop-blur-md rounded-full border border-white/20 flex items-center gap-1.5 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                <span className="text-[10px] font-bold text-white uppercase tracking-wider">Certified</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Content Section */}
+          <div className="flex-grow flex flex-col">
+            <h3 className="text-xl font-bold text-white mb-2 comfortaa-700 group-hover:text-cyan-300 transition-colors duration-300 line-clamp-2">
+              {certificate.title}
+            </h3>
+
+            <p className="text-white/60 text-sm mb-6 line-clamp-2 font-light">
+              {certificate.description || "Official certification of achievement for professional development and skill mastery."}
+            </p>
+
+            <div className="mt-auto pt-4 border-t border-white/5 flex items-center justify-between">
+              <span className="text-xs text-white/40 font-mono tracking-tighter">REF: #{certificate.id.toString().padStart(4, '0')}</span>
+
+              {certificate.link ? (
+                <Link
+                  to={certificate.link}
+                  className="group/btn relative px-5 py-2 overflow-hidden rounded-lg transition-all"
+                >
+                  <div className="absolute inset-0 bg-white/10 group-hover/btn:bg-white/20 transition-colors" />
+                  <div className="relative flex items-center gap-2 text-xs font-bold text-white uppercase tracking-widest">
+                    Explore
+                    <motion.svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-3.5 w-3.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      animate={{ x: [0, 3, 0] }}
+                      transition={{ repeat: Infinity, duration: 1.5 }}
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </motion.svg>
+                  </div>
+                </Link>
+              ) : (
+                <div className="text-[10px] font-bold text-white/30 uppercase tracking-widest px-4 py-2 bg-white/5 rounded-lg border border-white/5">
+                  Internal
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

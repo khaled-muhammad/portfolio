@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Navbar from "./components/NavBar";
 import WaterText from "./components/WaterText";
 import CertificateCard from "./components/CertificateCard";
@@ -1246,10 +1246,10 @@ export const App = () => {
     defaultAxios.get("certificates/").then((res) => {
       setCerts(
         res.data.map((cert: any) => ({
-            id: cert.id,
-            title: cert.title,
-            image: cert.image,
-            link: `/certs/${cert.id}`,
+          id: cert.id,
+          title: cert.title,
+          image: cert.image,
+          link: `/certs/${cert.id}`,
         }))
       );
     });
@@ -1346,15 +1346,46 @@ export const App = () => {
         </h2>
         <InfiniteItemsScroll items={skills} />
       </section>
-      <section id="certs" className="relative min-h-[100vh] flex flex-col items-center justify-center py-20 px-4 md:px-10">
-        <h2 className="text-center text-5xl bg-white/10 backdrop-blur-md border border-white/20 w-fit pt-3 pb-2 px-8 rounded-2xl mb-16 museomoderno-400 text-white shadow-lg">
-          Certificates
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl mx-auto">
-          {certificates.map((cert: any, index) => (
+      <section id="certs" className="relative min-h-[80vh] flex flex-col items-center justify-center py-24 px-4 md:px-10 overflow-hidden">
+        {/* Background Decorative Element */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-cyan-500/5 rounded-full blur-[120px] -z-10" />
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          className="text-center mb-20"
+        >
+          <h2 className="text-6xl md:text-7xl museomoderno-700 text-white mb-4 tracking-tighter">
+            Achievements
+          </h2>
+          <div className="h-1.5 w-24 bg-gradient-to-r from-cyan-400 to-purple-500 mx-auto rounded-full" />
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 w-full max-w-7xl mx-auto mb-16">
+          {certificates.slice(0, 3).map((cert: any, index) => (
             <CertificateCard key={cert.id} certificate={cert} index={index} />
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5 }}
+        >
+          <Link to="/certs">
+            <div className="group relative px-10 py-4 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-2xl">
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="relative flex items-center gap-3 text-white font-bold tracking-[0.2em] uppercase text-sm">
+                Show All Certificates
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 transform group-hover:translate-x-2 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </div>
+            </div>
+          </Link>
+        </motion.div>
       </section>
       <section
         id="about"
@@ -1395,7 +1426,7 @@ export const App = () => {
               <p className="text-center">Curiosity, growth & impact</p>
             </div>
             <div className="flex justify-center mt-6">
-              <GlassyButton text="Read More About Me" onClick={() => {toast("Coming Soon")}} />
+              <GlassyButton text="Read More About Me" onClick={() => { toast("Coming Soon") }} />
             </div>
           </div>
           <div className="flex-[1.8] flex flex-col justify-center items-center">
@@ -1433,7 +1464,7 @@ export const App = () => {
                   <div className="bubble">{(icons as any)[socialMedia[0].platform]}</div>
                 </a>
               )}
-              <GlassyButton text="Open CV" className="" onClick={() => {toast("Coming Soon")}} />
+              <GlassyButton text="Open CV" className="" onClick={() => { toast("Coming Soon") }} />
               {socialMedia.length >= 2 && (
                 <a href={socialMedia[1].url} className="group">
                   <div className="bubble">{(icons as any)[socialMedia[1].platform]}</div>

@@ -36,7 +36,7 @@ const Footer = () => {
           <h2 className="text-2xl mb-5">Contact</h2>
           <ul className="flex flex-col items-start gap-3">
             {personalContactInfo.map((i) => <li>
-              <a href={i.title == 'email'? `mailto:${i.info}`: undefined} className="flex justify-center items-center gap-2 group">
+              <a href={i.title == 'email' ? `mailto:${i.info}` : undefined} className="flex justify-center items-center gap-2 group">
                 <div className="bubble min-w-10">
                   {(icons as any)[i.title]}
                 </div>
