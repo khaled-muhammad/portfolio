@@ -23,7 +23,7 @@ const Footer = () => {
       <Logo width={100} className="self-center" />
       <h2 className="text-center text-5xl">Book Meeting today</h2>
       <p className="text-center font-medium text-white/60">
-        We can discuss projects, make deals, collab together and more!
+        Let&apos;s discuss projects, collaborate, or just connect!
       </p>
       <HashLink to="/book" className="flex justify-center">
         <GlassyButton
@@ -58,7 +58,7 @@ const Footer = () => {
         </div>
       </div>
       <WaterText
-        text="All copyrights reserved © 2025"
+        text={`All copyrights reserved © ${new Date().getFullYear()}`}
         className="text-center comfortaa-700"
         color="rgba(255,255,255,0.6)"
       />
