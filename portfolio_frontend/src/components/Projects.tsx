@@ -2,7 +2,7 @@ import { Label } from "./Label";
 import SimpleGlassyBtn from "./SimpleGlassyBtn";
 import GithubIcon from "../assets/icons/Github.svg";
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { defaultAxios } from "@/lib/api";
 import { toast } from "react-toastify";
 
@@ -32,6 +32,7 @@ const stackIcons = {
 };
 
 const Projects = () => {
+  const prefersReducedMotion = useReducedMotion();
   const [projects, setProjects] = useState([]);
   const [currentFilter, setCurrentFilter] = useState("web");
 
@@ -52,9 +53,12 @@ const Projects = () => {
               filteredProjects.map((proj: any) => (
                 <motion.div
                   key={proj.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
+                  initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
+                  exit={prefersReducedMotion ? false : { opacity: 0, scale: 0.9 }}
+                  transition={
+                    prefersReducedMotion ? ({ duration: 0 } as const) : undefined
+                  }
                   className="gallery-card relative p-4 bg-white/30 rounded-lg gradient-outline before:rounded-lg"
                 >
                   <div className="content bg-white/30 rounded-lg w-full h-full px-4 pt-4 pb-30 flex flex-col md:flex-row lg:flex-col md:items-center lg:items-stretch gap-4 relative gradient-outline before:rounded-lg">
@@ -102,7 +106,7 @@ const Projects = () => {
                     </div>
                     <hr />
                     <div className="cta flex gap-4 flex-wrap justify-around items-center">
-                      <a href={proj.url} target="_blank">
+                      <a href={proj.url} target="_blank" rel="noopener noreferrer">
                         <SimpleGlassyBtn className="text-black/70 cursor-pointer">
                           <span className="hidden xl:block">Live Demo</span>
                           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -111,9 +115,9 @@ const Projects = () => {
                         </SimpleGlassyBtn>
                       </a>
                       {proj.github_url && (
-                        <a href={proj.github_url} target="_blank">
+                        <a href={proj.github_url} target="_blank" rel="noopener noreferrer">
                           <SimpleGlassyBtn className="text-black/70 cursor-pointer">
-                            <span className="hidden xl:block">Github</span>
+                            <span className="hidden xl:block">GitHub</span>
                             <img src={GithubIcon} width={18} />
                           </SimpleGlassyBtn>
                         </a>
@@ -148,20 +152,27 @@ const Projects = () => {
             ) : (
               <motion.div
                 key="empty"
-                initial={{ opacity: 0, y: 20 }}
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
+                exit={prefersReducedMotion ? false : { opacity: 0, y: -20 }}
+                transition={
+                  prefersReducedMotion ? ({ duration: 0 } as const) : undefined
+                }
                 className="col-span-full flex flex-col items-center justify-center py-20 px-10 text-center"
               >
                 <div className="relative mb-8">
-                  <motion.div
-                    animate={{
-                      scale: [1, 1.1, 1],
-                      opacity: [0.3, 0.6, 0.3]
-                    }}
-                    transition={{ duration: 4, repeat: Infinity }}
-                    className="absolute inset-0 bg-white/40 blur-3xl rounded-full"
-                  />
+                  {prefersReducedMotion ? (
+                    <div className="absolute inset-0 rounded-full bg-white/35 blur-3xl opacity-55" />
+                  ) : (
+                    <motion.div
+                      animate={{
+                        scale: [1, 1.1, 1],
+                        opacity: [0.3, 0.6, 0.3],
+                      }}
+                      transition={{ duration: 4, repeat: Infinity }}
+                      className="absolute inset-0 bg-white/40 blur-3xl rounded-full"
+                    />
+                  )}
                   <div className="relative bg-white/20 backdrop-blur-2xl p-8 rounded-full ring-2 ring-white/30 shadow-2xl">
                     <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-white/80">
                       <path d="M12 2V4M12 20V22M4 12H2M22 12H20M18.36 18.36L19.78 19.78M5.64 5.64L4.22 4.22M18.36 5.64L19.78 4.22M5.64 18.36L4.22 19.78M12 17C14.7614 17 17 14.7614 17 12C17 9.23858 14.7614 7 12 7C9.23858 7 7 9.23858 7 12C7 14.7614 9.23858 17 12 17Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -177,8 +188,16 @@ const Projects = () => {
                     {[1, 2, 3].map((i) => (
                       <motion.div
                         key={i}
-                        animate={{ opacity: [0.3, 1, 0.3] }}
-                        transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }}
+                        animate={
+                          prefersReducedMotion
+                            ? { opacity: 0.85 }
+                            : { opacity: [0.3, 1, 0.3] }
+                        }
+                        transition={
+                          prefersReducedMotion
+                            ? { duration: 0 }
+                            : { duration: 1.5, repeat: Infinity, delay: i * 0.2 }
+                        }
                         className="w-2 h-2 bg-white rounded-full"
                       />
                     ))}

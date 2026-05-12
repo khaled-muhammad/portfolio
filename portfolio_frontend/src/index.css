@@ -462,3 +462,37 @@
   border-radius: 22px;
   background-color: rgba(255, 0, 0, 0.231);
 }
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    body,
+    a,
+    button,
+    [role="button"],
+    input,
+    textarea,
+    select {
+      cursor: auto !important;
+    }
+  }
+
+  .animate-float,
+  .animate-float1,
+  .animate-float2,
+  .animate-float3,
+  .animate-scroll {
+    animation: none !important;
+  }
+
+  .animate-ud::before {
+    animation: none !important;
+  }
+
+  .animate-pulse {
+    animation: none !important;
+  }
+}

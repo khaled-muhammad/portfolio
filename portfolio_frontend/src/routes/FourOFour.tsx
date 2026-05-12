@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import WaterText from "@/components/WaterText";
 import GlassyButton from "@/components/GooeyBtn";
 import Navbar from "@/components/NavBar";
 
 const FourOFour = () => {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <>
       <Navbar />
@@ -13,9 +15,13 @@ const FourOFour = () => {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(90vw,600px)] h-[min(90vw,600px)] bg-cyan-500/5 rounded-full blur-[100px] -z-10" />
 
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          transition={
+            prefersReducedMotion
+              ? ({ duration: 0 } as const)
+              : { duration: 0.55, ease: [0.22, 1, 0.36, 1] }
+          }
           className="flex flex-col items-center text-center max-w-lg w-full"
         >
           <div className="mb-4 w-full">
@@ -26,9 +32,13 @@ const FourOFour = () => {
           </div>
 
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.12, duration: 0.5 }}
+            transition={
+              prefersReducedMotion
+                ? ({ duration: 0 } as const)
+                : { delay: 0.12, duration: 0.5 }
+            }
             className="w-full rounded-[2rem] bg-white/10 backdrop-blur-2xl border border-white/20 shadow-[inset_5px_3px_4px_rgba(255,255,255,0.15)] gradient-outline before:rounded-[2rem] px-8 py-10 text-white/90"
           >
             <h2 className="museomoderno-400 text-2xl sm:text-3xl mb-3 text-white">

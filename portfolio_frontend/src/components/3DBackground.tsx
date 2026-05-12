@@ -138,6 +138,17 @@ export default function ThreeDBackground({
   const camera = useRef<THREE.OrthographicCamera | null>(null);
   const shaderMaterial = useRef<THREE.ShaderMaterial | null>(null);
   const timer = useRef(new THREE.Clock());
+  const reduceMotionRef = useRef(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    reduceMotionRef.current = mq.matches;
+    const sync = () => {
+      reduceMotionRef.current = mq.matches;
+    };
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   const updateCanvasSize = () => {
     const currentRenderer = renderer.current;
@@ -162,7 +173,9 @@ export default function ThreeDBackground({
     
     if (!currentRenderer || !currentScene || !currentCamera || !currentMaterial) return;
 
-    currentMaterial.uniforms.u_time.value = timer.current.getElapsedTime();
+    if (!reduceMotionRef.current) {
+      currentMaterial.uniforms.u_time.value = timer.current.getElapsedTime();
+    }
     currentRenderer.render(currentScene, currentCamera);
     requestAnimationFrame(animate);
   };

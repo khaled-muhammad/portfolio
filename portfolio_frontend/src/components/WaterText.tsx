@@ -20,7 +20,13 @@ const WaterText: React.FC<WaterTextProps> = ({
   useEffect(() => {
     const h1 = textRef.current;
     if (!h1) return;
-    
+
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mq.matches) {
+      h1.classList.add('water-text--reduced');
+      return () => h1.classList.remove('water-text--reduced');
+    }
+
     for (let i = 0; i < 15; i++) {
       const droplet = document.createElement('div');
       droplet.classList.add('droplet');
@@ -33,22 +39,28 @@ const WaterText: React.FC<WaterTextProps> = ({
     }
 
     let frames = 0;
-    let animationFrameId: number;
+    let animationFrameId = 0;
+    let settleTimeoutId: ReturnType<typeof setTimeout>;
+    let cancelled = false;
+
     const animate = () => {
-      frames += 0.05; // Increased step size to reduce update frequency requirement
+      if (cancelled) return;
+      frames += 0.05;
       const baseFrequency = 0.01 + Math.abs(Math.sin(frames) * 0.005);
       if (turbulenceRef.current) {
         turbulenceRef.current.setAttribute('baseFrequency', `${baseFrequency} ${baseFrequency + 0.01}`);
       }
-      // Limit frame rate to ~30fps for performance
-      setTimeout(() => {
+      settleTimeoutId = setTimeout(() => {
         animationFrameId = requestAnimationFrame(animate);
       }, 33);
     };
     animate();
 
     return () => {
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      cancelled = true;
+      clearTimeout(settleTimeoutId);
+      cancelAnimationFrame(animationFrameId);
+      h1.querySelectorAll('.droplet').forEach((d) => d.remove());
     };
   }, []);
 

@@ -1,0 +1,328 @@
+/* Fonts loaded in src/app/layout.tsx via next/font/google (same families as portfolio_frontend) */
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Marketing site: the exact same styles from portfolio_frontend */
+
+.museomoderno-400 {
+  font-family: var(--font-museomoderno), "MuseoModerno", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.museomoderno-700 {
+  font-family: var(--font-museomoderno), "MuseoModerno", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.comfortaa-700 {
+  font-family: var(--font-comfortaa), "Comfortaa", sans-serif;
+  font-optical-sizing: auto;
+  /* Comfortaa max weight on Google is 700 (original used 800; 700 matches the served file) */
+  font-weight: 700;
+  font-style: normal;
+}
+
+.pacifico {
+  font-family: var(--font-pacifico), "Pacifico", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.molle-regular-italic {
+  font-family: var(--font-molle), "Molle", cursive;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.quicksand-400 {
+  font-family: var(--font-quicksand), "Quicksand", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+.font-montserrat {
+  font-family: var(--font-montserrat), "Montserrat", sans-serif;
+}
+
+.font-pacifico {
+  font-family: var(--font-pacifico), "Pacifico", cursive;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  /* Marketing pages: use the bg.png background */
+  body {
+    color: #fafafa;
+  }
+
+  body.marketing-layout {
+    background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url("/bg.png") no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    overflow-x: hidden;
+  }
+
+  /* Dashboard: clean dark background */
+  body.dashboard-layout {
+    background: #09090b;
+    color: #fafafa;
+  }
+
+  #__next, #root {
+    overflow-x: hidden;
+  }
+
+  /* Pill body shared with landing nav notch; position via .marketing-notch-cluster */
+  .notch {
+    @apply backdrop-blur-md bg-black rounded-full pe-6 py-2 shadow-xl flex items-center gap-6 overflow-hidden transition-all duration-1000;
+  }
+
+  .marketing-notch-cluster {
+    @apply pointer-events-none fixed top-5 left-1/2 z-[1000] flex -translate-x-1/2 items-center gap-3;
+  }
+
+  /* Icon-only control: same surface as .notch, height matched to notch (py-2 + 20px icon ≈ size-9) */
+  .notch-sibling-orb {
+    @apply pointer-events-auto aspect-square size-9 shrink-0 backdrop-blur-md bg-black shadow-xl flex items-center justify-center rounded-full overflow-hidden transition-all duration-1000;
+  }
+
+  .watery-text {
+    @apply text-6xl pl-14 pt-8;
+    background: linear-gradient(45deg,
+        #00c8ff96,
+        #0073ffb4,
+        #00c8ffb8,
+        #0073ffb3,
+        #74baffcd,
+        #0985e3b1);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: #00c8ffab -1px 6px 36px;
+    filter: blur(8px);
+  }
+
+  .label {
+    @apply bg-white/10 w-fit px-4 py-2 rounded-br-2xl rounded-tr-2xl backdrop-blur-lg relative before:rounded-br-2xl before:rounded-tr-2xl;
+    box-shadow: inset 0px -3px 4px rgba(255, 255, 255, 0.3);
+  }
+
+  .label-rounded-full {
+    @apply bg-white/10 w-fit px-4 py-2 rounded-2xl backdrop-blur-lg relative before:rounded-2xl;
+    box-shadow: inset 0px -3px 4px rgba(255, 255, 255, 0.3);
+  }
+
+  .bubble {
+    @apply overflow-hidden backdrop-blur-lg aspect-square flex min-w-12 items-center justify-center rounded-full relative before:rounded-full text-transparent bg-clip-text bg-gradient-to-b from-[#f5f5f5] via-[#cfcfcf] to-[#cfcfcf] transition-transform duration-300 ease-out group-hover:scale-110 group-active:scale-95;
+    box-shadow: inset 2px 2px 3px rgba(255, 255, 255, 0.4), inset -2px -2px 3px rgba(255, 255, 255, 0.25);
+  }
+}
+
+@layer utilities {
+  .txt-inner-shadow {
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2),
+      -2px -2px 6px rgba(255, 255, 255, 0.6);
+  }
+
+  .glassy-input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #1f2937;
+    transition: all 0.3s ease;
+  }
+
+  .glassy-input::placeholder {
+    color: rgba(31, 41, 55, 0.6);
+  }
+
+  .glassy-input:focus {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 0 3px rgba(31, 41, 55, 0.1);
+  }
+
+  .animate-float1 {
+    animation: float1 6s ease-in-out infinite;
+  }
+
+  .animate-float2 {
+    animation: float2 8s ease-in-out infinite;
+  }
+
+  .animate-float3 {
+    animation: float3 7s ease-in-out infinite;
+  }
+
+  @keyframes float1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, -20px) scale(1.1); }
+  }
+
+  @keyframes float2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-20px, 25px) scale(1.15); }
+  }
+
+  @keyframes float3 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(15px, 15px) scale(0.9); }
+  }
+
+  .animate-wobble {
+    animation: wobble 0.8s ease-in-out;
+  }
+
+  @keyframes wobble {
+    0% { transform: scale(1, 1) rotate(0deg); }
+    25% { transform: scale(1.1, 0.9) rotate(-2deg); }
+    50% { transform: scale(0.9, 1.1) rotate(2deg); }
+    75% { transform: scale(1.05, 0.95) rotate(-1deg); }
+    100% { transform: scale(1, 1) rotate(0deg); }
+  }
+
+  .animate-ripple {
+    animation: ripple 4s linear infinite;
+  }
+
+  @keyframes ripple {
+    0% { background-position: 50% 50%; }
+    50% { background-position: 60% 40%; }
+    100% { background-position: 50% 50%; }
+  }
+
+  .animate-scroll {
+    animation: scroll 20s linear infinite;
+  }
+
+  @keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+  }
+
+  .animate-float {
+    animation: float 8s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+  }
+
+  @keyframes ud {
+    0% { transform: scaleY(0); transform-origin: bottom; }
+    25% { transform: scaleY(1); transform-origin: bottom; }
+    50% { transform: scaleY(0); transform-origin: bottom; }
+    51% { transform: scaleY(0); transform-origin: top; }
+    75% { transform: scaleY(1); transform-origin: top; }
+    100% { transform: scaleY(0); transform-origin: top; }
+  }
+
+  .animate-ud::before {
+    animation: ud 3s ease-in-out infinite;
+  }
+
+  @keyframes slideInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-slideInUp {
+    animation: slideInUp 0.5s ease-out forwards;
+  }
+}
+
+.gradient-outline::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  background: linear-gradient(to right,
+      rgba(255, 255, 255, 0.116),
+      rgba(255, 255, 255, 0.518),
+      rgba(255, 255, 255, 0.25));
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+::selection {
+  border-radius: 22px;
+  background-color: rgba(255, 0, 0, 0.231);
+}
+
+/* Dashboard-specific custom scrollbar */
+body.dashboard-layout ::-webkit-scrollbar {
+  width: 6px;
+}
+body.dashboard-layout ::-webkit-scrollbar-track {
+  background: #18181b;
+}
+body.dashboard-layout ::-webkit-scrollbar-thumb {
+  background: #3f3f46;
+  border-radius: 3px;
+}
+
+/* Dashboard variables */
+body.dashboard-layout {
+  --background: #09090b;
+  --foreground: #fafafa;
+  --card: #18181b;
+  --card-foreground: #fafafa;
+  --border: #27272a;
+  --input: #27272a;
+  --primary: #06b6d4;
+  --ring: #06b6d4;
+  --radius: 0.625rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-float,
+  .animate-float1,
+  .animate-float2,
+  .animate-float3,
+  .animate-scroll {
+    animation: none !important;
+  }
+
+  .animate-ud::before {
+    animation: none !important;
+  }
+
+  .animate-pulse {
+    animation: none !important;
+  }
+}
+
+/* Marketing pages: hide cursor on hover devices */
+@media (hover: hover) and (pointer: fine) {
+  body.marketing-layout {
+    cursor: none;
+  }
+
+  body.marketing-layout a,
+  body.marketing-layout button,
+  body.marketing-layout [role="button"],
+  body.marketing-layout input,
+  body.marketing-layout textarea,
+  body.marketing-layout select {
+    cursor: none;
+  }
+}

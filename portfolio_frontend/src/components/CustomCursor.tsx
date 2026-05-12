@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useReducedMotion } from 'framer-motion';
 
 const CustomCursor = () => {
+  const prefersReducedMotion = useReducedMotion();
   const [isVisible, setIsVisible] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const cursorX = useMotionValue(-100);
@@ -50,6 +51,8 @@ const CustomCursor = () => {
       document.body.removeEventListener('mouseover', handleMouseOver);
     };
   }, [cursorX, cursorY, isVisible]);
+
+  if (prefersReducedMotion) return null;
 
   return (
     <>

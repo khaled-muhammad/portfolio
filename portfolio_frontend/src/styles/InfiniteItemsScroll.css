@@ -9,6 +9,66 @@
   gap: 30px;
 }
 
+
+.scroll-items-container.motion-reduced .scroll-items-track {
+  animation: none !important;
+  transform: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-items-container .scroll-items-track {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .scroll-items-container .scroll-items-track.reverse {
+    transform: none !important;
+  }
+
+  .iI-Item {
+    transition-duration: 0.01ms;
+  }
+
+  .iI-Item:hover {
+    transform: none;
+    box-shadow:
+      0 4px 15px rgba(0, 0, 0, 0.1),
+      inset 0 1px 1px rgba(255, 255, 255, 0.2),
+      inset 0 -1px 1px rgba(255, 255, 255, 0.1);
+  }
+
+  .iI-Item:hover .item-title,
+  .iI-Item:focus-within .item-title {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .scroll-items-container:hover .scroll-items-track {
+    animation-play-state: running;
+  }
+}
+
+.scroll-items-container.motion-reduced .scroll-items-track.reverse {
+  transform: none !important;
+}
+
+.scroll-items-container.motion-reduced .iI-Item {
+  transition-duration: 0.01ms;
+}
+
+.scroll-items-container.motion-reduced .iI-Item:hover {
+  transform: none;
+  box-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.1);
+}
+
+.scroll-items-container.motion-reduced .item-title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .scroll-items-track {
   display: flex;
   flex-wrap: nowrap;

@@ -9,6 +9,7 @@ interface GlassyButtonProps {
 const GlassyButton: React.FC<GlassyButtonProps> = ({ text = "Read More", className = "", onClick }) => {
   return (
       <button
+        type="button"
         className={`
           relative px-8 py-4 rounded-full
           bg-white/10 backdrop-blur-xl
@@ -17,9 +18,11 @@ const GlassyButton: React.FC<GlassyButtonProps> = ({ text = "Read More", classNa
           hover:shadow-[inset_2px_2px_4px_rgba(255,255,255,0.5),inset_-2px_-2px_4px_rgba(0,0,0,0.1),0_12px_24px_rgba(0,0,0,0.4)]
           text-white font-bold text-xl
           transition-all duration-300 ease-out
+          motion-reduce:transition-none motion-reduce:active:scale-100
           active:scale-95
           cursor-pointer
           overflow-hidden
+          outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-transparent
         ${className}`}
         onClick={onClick}
       >

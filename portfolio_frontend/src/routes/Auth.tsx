@@ -1,9 +1,10 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { Logo } from "../components/NavBar";
 
 const AuthRoute = () => {
+    const prefersReducedMotion = useReducedMotion();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -25,8 +26,11 @@ const AuthRoute = () => {
             <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-500/10 blur-[120px] rounded-full" />
 
             <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
+                transition={
+                    prefersReducedMotion ? ({ duration: 0 } as const) : undefined
+                }
                 className="relative z-10 w-full max-w-md px-6"
             >
                 <div className="bg-white/5 backdrop-blur-2xl rounded-3xl p-8 ring-1 ring-white/10 shadow-2xl gradient-outline before:rounded-3xl">
@@ -72,14 +76,18 @@ const AuthRoute = () => {
                             type="submit"
                             className="w-full group relative"
                         >
-                            <div className={`absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl blur opacity-30 group-hover:opacity-60 transition-opacity duration-500 ${isLoading ? 'animate-pulse' : ''}`} />
+                            <div className={`absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl blur opacity-30 group-hover:opacity-60 transition-opacity duration-500 ${isLoading && !prefersReducedMotion ? 'animate-pulse' : ''}`} />
                             <div className="relative bg-white/10 hover:bg-white/20 border border-white/10 text-white font-bold py-3.5 rounded-xl transition-all active:scale-[0.98] flex items-center justify-center gap-3">
                                 {isLoading ? (
+                                    prefersReducedMotion ? (
+                                        <span className="w-5 h-5 rounded-full border-2 border-white/60 border-t-transparent inline-block shrink-0" aria-hidden />
+                                    ) : (
                                     <motion.div
                                         animate={{ rotate: 360 }}
                                         transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                                         className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
                                     />
+                                    )
                                 ) : (
                                     <>
                                         <span>Initialize Session</span>

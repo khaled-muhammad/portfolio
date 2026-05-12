@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-
+import { useReducedMotion } from "framer-motion";
 
 import "../styles/InfiniteItemsScroll.css";
 
@@ -14,6 +14,7 @@ const InfiniteItemsScroll = ({ items }: ItemsScrollProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [mPos, setMPos] = useState({ x: 0, y: 0 });
   const iRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const shouldReduceMotion = useReducedMotion() === true;
 
   const rCount = 3;
   const skillsPerRow = Math.ceil(items.length / rCount);
@@ -25,6 +26,8 @@ const InfiniteItemsScroll = ({ items }: ItemsScrollProps) => {
   });
 
   useEffect(() => {
+    if (shouldReduceMotion) return;
+
     const handleMouseMove = (e: MouseEvent) => {
       setMPos({ x: e.clientX, y: e.clientY });
     };
@@ -33,10 +36,10 @@ const InfiniteItemsScroll = ({ items }: ItemsScrollProps) => {
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
     };
-  }, []);
+  }, [shouldReduceMotion]);
 
   useEffect(() => {
-    if (!ref.current) return;
+    if (!ref.current || shouldReduceMotion) return;
 
     iRefs.current.forEach((e) => {
       if (!e) return;
@@ -63,14 +66,25 @@ const InfiniteItemsScroll = ({ items }: ItemsScrollProps) => {
         e.style.transform = 'translate(0, 0)';
       }
     });
-  }, [mPos]);
+  }, [mPos, shouldReduceMotion]);
+
+  useEffect(() => {
+    if (!shouldReduceMotion) return;
+    iRefs.current.forEach((e) => {
+      if (!e) return;
+      e.style.transform = "translate(0, 0)";
+    });
+  }, [shouldReduceMotion]);
 
   useEffect(() => {
     iRefs.current = iRefs.current.slice(0, items.length * 2 * rCount);
   }, [items, rCount]);
 
   return (
-    <div className="scroll-items-container" ref={ref}>
+    <div
+      className={`scroll-items-container${shouldReduceMotion ? " motion-reduced" : ""}`}
+      ref={ref}
+    >
       {rows.map((rowSkills, rowIndex) => (
         <div 
           key={`row-${rowIndex}`}

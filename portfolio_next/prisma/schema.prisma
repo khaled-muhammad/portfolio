@@ -1,0 +1,152 @@
+// https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SkillKind {
+  skill
+  tool
+}
+
+enum SkillSection {
+  Programming_Language
+  Framework
+  Database
+  DevOp
+  Library
+}
+
+enum ProjectPlatform {
+  web
+  mobile
+  scripts
+  cli
+  software_gui
+}
+
+enum CertificateCategory {
+  courses
+  contests
+  benchmarks
+  participation
+  scholarships
+}
+
+model Skill {
+  id                Int           @id @default(autoincrement())
+  title             String
+  about             String?       @db.Text
+  summary           String?       @db.Text
+  iconUrl           String?
+  uses              String?       @db.Text
+  abilities         String?       @db.Text
+  kind              SkillKind     @default(skill)
+  section           SkillSection?
+  yearsOfExperience Int?
+  progress          Int?
+  projects          Project[]
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+}
+
+model Project {
+  id          Int               @id @default(autoincrement())
+  name        String
+  platforms   ProjectPlatform[]
+  url         String?
+  description String?           @db.Text
+  imageUrl    String?
+  githubUrl   String?
+  status      DateTime?
+  startDate   DateTime?
+  skills      Skill[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+}
+
+model ContactMessage {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  phone     String?
+  message   String   @db.Text
+  createdAt DateTime @default(now())
+  read      Boolean  @default(false)
+}
+
+model Certificate {
+  id          Int                  @id @default(autoincrement())
+  title       String?
+  description String?             @db.Text
+  category    CertificateCategory?
+  imageUrl    String
+  aspectRatio Float?
+  dateIssued  DateTime?
+  issuer      String?
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+}
+
+model Info {
+  id    Int    @id @default(autoincrement())
+  title String @unique
+  info  String @db.Text
+}
+
+model SiteSettings {
+  id              Int    @id @default(1)
+  siteTitle       String @default("")
+  siteDescription String @default("") @db.Text
+  canonicalBaseUrl String @default("")
+  ogImageUrl      String @default("")
+  twitterHandle   String @default("")
+  personName      String @default("")
+  keywords        String @default("") @db.Text
+}
+
+enum SocialPlatform {
+  GitHub
+  GitLab
+  Bitbucket
+  LinkedIn
+  Twitter
+  X
+  Facebook
+  Instagram
+  YouTube
+  Twitch
+  Reddit
+  StackOverflow
+  Hashnode
+  DevTo
+  Medium
+  Dribbble
+  Behance
+  CodePen
+  LeetCode
+  HackerRank
+  Codeforces
+  Codewars
+  Kaggle
+  Replit
+  Discord
+  Telegram
+  Figma
+  ProductHunt
+  Substack
+  Notion
+  Other
+}
+
+model SocialMedia {
+  id       Int           @id @default(autoincrement())
+  platform SocialPlatform @default(Other)
+  url      String
+  username String       @default("")
+}

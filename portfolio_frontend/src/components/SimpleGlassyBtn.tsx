@@ -17,10 +17,12 @@ export const SimpleGlassyBtn = ({
   paddingX = "4",
   paddingY = "2",
   shadow = "shadow-[inset_5px_3px_4px_rgba(255,255,255,0.2)]",
+  type = "button",
   ...props
 }: SimpleGlassyBtnProps) => {
   return (
     <button
+      type={type}
       className={`glassy-btn
         rounded-${rounded}
         bg-white/${bgOpacity}
@@ -32,6 +34,8 @@ export const SimpleGlassyBtn = ({
         relative before:rounded-${rounded}
         ${shadow}
         z-10 flex items-center justify-center gap-2
+        outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-transparent
+        motion-reduce:transition-none
         ${className}`}
       {...props}
     >

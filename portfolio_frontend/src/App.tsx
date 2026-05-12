@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Navbar from "./components/NavBar";
 import WaterText from "./components/WaterText";
 import CertificateCard from "./components/CertificateCard";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import scrollDown from "./assets/scroll-down.gif";
 import GlassyButton from "./components/GooeyBtn";
 import SmoothScroll from "./components/SmoothScroll";
@@ -34,12 +34,16 @@ interface SocialMedia {
 }
 
 export const App = () => {
+  const prefersReducedMotion = useReducedMotion();
+  const motionTransition = prefersReducedMotion
+    ? ({ duration: 0 } as const)
+    : undefined;
   const [certificates, setCerts] = useState<Certificate[]>([]);
   const [socialMedia, setSocialMedia] = useState<SocialMedia[]>([]);
 
   const skills = [
     {
-      title: "Html 5",
+      title: "HTML",
       icon: (
         <svg viewBox="0 0 128 128">
           <path
@@ -62,7 +66,7 @@ export const App = () => {
       ),
     },
     {
-      title: "CSS 3",
+      title: "CSS",
       icon: (
         <svg viewBox="0 0 128 128">
           <path
@@ -93,7 +97,7 @@ export const App = () => {
       ),
     },
     {
-      title: "JS",
+      title: "JavaScript",
       icon: (
         <svg viewBox="0 0 128 128" width="100%">
           <path fill="#FFFFFF38" d="M1.408 1.408h125.184v125.185H1.408z"></path>
@@ -105,7 +109,7 @@ export const App = () => {
       ),
     },
     {
-      title: "TS",
+      title: "TypeScript",
       icon: (
         <GlassySVG>
           <svg viewBox="0 0 128 128">
@@ -252,7 +256,7 @@ export const App = () => {
       ),
     },
     {
-      title: "AXIOS",
+      title: "Axios",
       icon: (
         <svg viewBox="0 0 128 128">
           <path
@@ -328,7 +332,7 @@ export const App = () => {
       ),
     },
     {
-      title: "GIT",
+      title: "Git",
       icon: (
         <svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -356,7 +360,7 @@ export const App = () => {
       ),
     },
     {
-      title: "Github",
+      title: "GitHub",
       icon: (
         <svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -463,7 +467,7 @@ export const App = () => {
       ),
     },
     {
-      title: "SQLITE",
+      title: "SQLite",
       icon: (
         <GlassySVG>
           <svg viewBox="0 0 128 128">
@@ -522,7 +526,7 @@ export const App = () => {
       ),
     },
     {
-      title: "ViteJS",
+      title: "Vite",
       icon: (
         <GlassySVG>
           <svg viewBox="0 0 128 128">
@@ -602,7 +606,14 @@ export const App = () => {
             </div>
             <div className="social-media flex gap-6 justify-center mr-0 md:mr-10">
               {socialMedia.slice(0, 4).map((sm) => (
-                <a href={sm.url} target="_blank">
+                <a
+                  key={sm.platform + sm.url}
+                  href={sm.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${sm.platform} profile (opens in a new tab)`}
+                  className="group shrink-0 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-slate-900/90"
+                >
                   <div className="bubble">{(icons as any)[sm.platform]}</div>
                 </a>
               ))}
@@ -612,7 +623,7 @@ export const App = () => {
         <div className="flex justify-center gap-5 items-start mt-10 md:mt-0">
           <a
             href="#projects"
-            className="flex flex-col justify-center items-center gap-6"
+            className="flex flex-col justify-center items-center gap-6 rounded-[2rem] outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-slate-900/70"
           >
             {/* <div className="glassy-btn rounded-xl bg-white/10 backdrop-blur-lg  w-fit min-w-32 text-center px-4 py-2 text-white font-bold gradient-outline relative before:rounded-xl shadow-[inset_5px_3px_4px_rgba(255,255,255,0.2)] z-10">
             <span className="text-white/70">See More</span>
@@ -650,9 +661,10 @@ export const App = () => {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-cyan-500/5 rounded-full blur-[120px] -z-10" />
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
+          transition={motionTransition}
           className="text-center mb-20"
         >
           <h2 className="text-6xl md:text-7xl museomoderno-700 text-white mb-4 tracking-tighter">
@@ -668,13 +680,20 @@ export const App = () => {
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.5 }}
+          transition={
+            prefersReducedMotion
+              ? ({ duration: 0 } as const)
+              : { delay: 0.5 }
+          }
         >
-          <Link to="/certs">
-            <div className="group relative px-10 py-4 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-2xl">
+          <Link
+            to="/certs"
+            className="inline-block rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-slate-900/80"
+          >
+            <div className="group relative px-10 py-4 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden transition-all motion-reduce:transition-none hover:scale-105 motion-reduce:hover:scale-100 active:scale-95 motion-reduce:active:scale-100 shadow-2xl">
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="relative flex items-center gap-3 text-white font-bold tracking-[0.2em] uppercase text-sm">
                 Show All Certificates
@@ -759,25 +778,44 @@ export const App = () => {
                 I&apos;m Khaled, a high school student in Alexandria building full-stack and mobile products. I started coding at age 9
                 and focus on React frontends with Django backends, plus Flutter when the project calls for mobile. I&apos;ve shipped
                 many personal and competition projects, competed in programming, science, and entrepreneurship, and was selected for programs
-                like <a href="https://deci.gov.eg/">DECI</a> and <a href="https://ebharmisr.com/en/home/">Ebhar Misr</a>.
+                like <a className="underline outline-offset-2 rounded-sm focus-visible:ring-2 focus-visible:ring-white/90" href="https://deci.gov.eg/" rel="noopener noreferrer">DECI</a> and <a className="underline outline-offset-2 rounded-sm focus-visible:ring-2 focus-visible:ring-white/90" href="https://ebharmisr.com/en/home/" rel="noopener noreferrer">Ebhar Misr</a>.
               </p>
             </div>
             <div className="flex gap-8 items-center">
               {socialMedia.length >= 1 && (
-                <a href={socialMedia[0].url} className="group">
+                <a
+                  href={socialMedia[0].url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${socialMedia[0].platform} (opens in a new tab)`}
+                  className="group shrink-0 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-slate-900/90"
+                >
                   <div className="bubble">{(icons as any)[socialMedia[0].platform]}</div>
                 </a>
               )}
               <GlassyButton text="Open CV" className="" onClick={() => { toast("Coming Soon") }} />
               {socialMedia.length >= 2 && (
-                <a href={socialMedia[1].url} className="group">
+                <a
+                  href={socialMedia[1].url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${socialMedia[1].platform} (opens in a new tab)`}
+                  className="group shrink-0 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-slate-900/90"
+                >
                   <div className="bubble">{(icons as any)[socialMedia[1].platform]}</div>
                 </a>
               )}
             </div>
             <div className="contin-links flex gap-4">
               {socialMedia.slice(2).map((sm) => (
-                <a href={sm.url} className="group">
+                <a
+                  key={sm.platform + sm.url}
+                  href={sm.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${sm.platform} (opens in a new tab)`}
+                  className="group shrink-0 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-slate-900/90"
+                >
                   <div className="bubble">{(icons as any)[sm.platform]}</div>
                 </a>
               ))}
